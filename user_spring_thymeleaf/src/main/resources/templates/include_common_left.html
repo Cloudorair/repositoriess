@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="include_common_left" th:remove="tag">
+	<p >
+		<!-- <strong  th:text="#{'menu.title'}">메뉴</strong> -->
+		<strong th:text="${#messages.msg('menu.title')}">메뉴</strong>
+	</p>
+	<ul>
+		<th:block th:if="${!#strings.isEmpty(session.sUserId)}">
+			<li><a href='' th:text="${session.sUserId+'님'}">guard1 님</a></li>
+			<!-- 
+			<li><a href='' th:text="${#messages.msg('menu.id',session.sUserId)}">guard1 님</a></li>
+			 -->
+			<li><a href='user_view'>내정보</a></li>
+			<li><a href="user_logout_action" >로그아웃</a></li>
+		</th:block>
+		<th:block th:unless=${!#strings.isEmpty(session.sUserId)}>
+			<li><a href="user_login_form">로그인</a></li>
+			<li><a href="user_write_form">회원가입</a></li>
+		</th:block>
+	</ul>
+</div>
+</html>
