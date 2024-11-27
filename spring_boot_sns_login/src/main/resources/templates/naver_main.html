@@ -1,0 +1,60 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Index</title>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script>
+	function getCookie(name) {
+		let parts = document.cookie.split(name + '=');
+		if (parts.length === 2) {
+			return parts[1].split(';')[0];
+		}
+	}
+	function naverLogin() {
+		let uri = 'https://nid.naver.com/oauth2.0/authorize?'
+				+ 'response_type=code' + // 인증과정에 대한 내부 구분값 code 로 전공 (고정값)
+				'&client_id=[[${client_id}]]' + // 발급받은 client_id 를 입력
+				'&state=NAVER_LOGIN_TEST' + // CORS 를 방지하기 위한 특정 토큰값(임의값 사용)
+				'&redirect_uri=[[${redirect_uri}]]'; // 어플케이션에서 등록했던 CallBack URL를 입력
+		location.href = uri;
+	}
+	function requestUserInfo() {
+		let authorize_access_token = getCookie('authorize-access-token');
+		$.ajax({
+			type : 'GET', // 타입 (get, post, put 등등)
+			url : '/naver_userinfo_with_token', // 요청할 서버url
+			async : true, // 비동기화 여부 (default : true)
+			dataType : 'text', // 데이터 타입 (html, xml, json, text 등등)
+			data : 'authorize-access-token=' + authorize_access_token, // 보낼 데이터 (Object , String, Array)
+			success : function(result) { // 결과 성공 콜백함수
+				console.log(result);
+				$('#userinfo').html(result);
+			},
+			error : function(request, status, error) { // 결과 에러 콜백함수
+				console.log(error)
+			}
+		})
+	}
+</script>
+</head>
+<body>
+	<h1>네이버메인</h1>
+	<th:block th:if="${naverProfile == null}">
+		<!-- Naver Login Image & Button -->
+		<button onclick="naverLogin();">
+			<img width="200" height="50" src="images/btnG_완성형.png">
+		</button>
+	</th:block>
+	<th:block th:if="${naverProfile != null}">
+		<ul>
+			<li th:text="|naverProfile:${naverProfile}|"></li>
+		</ul>
+		<button class="api-btn" onclick="requestUserInfo()">사용자 정보
+			가져오기</button>
+		<p id="userinfo"></p>
+	</th:block>
+</body>
+
+
+</html>

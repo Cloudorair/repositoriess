@@ -1,0 +1,11 @@
+{
+  "name": "kr.co.raon.touchenex",
+  "description": "CrossEX NativeMessagingHost",
+  "path": ".\\CrossEXChrome.exe",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://dncepekefegjiljlfbihljgogephdhph/",
+    "chrome-extension://gkdodgbccnhahcihaiakdkdfhchiahnf/",
+    "chrome-extension://dcpajfpljdghlmibcekolainmngcbpmb/"
+  ]
+}
